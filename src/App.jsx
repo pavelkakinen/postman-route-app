@@ -132,7 +132,7 @@ export default function App() {
 
   if (phase === 'navigating') {
     return (
-      <div className="app-ready">
+      <div className="app-ready app-navigating">
         <aside className="stop-list">
           <StepNavigator
             stop={validStops[currentStep]}
@@ -155,7 +155,7 @@ export default function App() {
           <Attribution />
         </aside>
         <main className="map-area">
-          <Map stops={stops} routeLine={routeLine} currentStep={currentStep} />
+          <Map stops={stops} routeLine={routeLine} currentStep={currentStep} navigating />
         </main>
       </div>
     )

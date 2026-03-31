@@ -18,18 +18,30 @@ function numberedIcon(n, state) {
   })
 }
 
-function MapController({ currentStep, geocoded }) {
+function MapController({ currentStep, geocoded, navigating }) {
   const map = useMap()
   useEffect(() => {
     if (currentStep != null && geocoded[currentStep]) {
       const s = geocoded[currentStep]
-      map.flyTo([s.lat, s.lng], 16, { duration: 1 })
+      if (navigating && window.innerWidth <= 640) {
+        // On mobile the bottom sheet covers ~45% of the screen.
+        // Use flyToBounds with padding so the marker lands in the visible top area.
+        const bounds = L.latLngBounds([[s.lat, s.lng]]).pad(0.005)
+        map.flyToBounds(bounds, {
+          paddingTopLeft: [20, 60],
+          paddingBottomRight: [20, Math.round(window.innerHeight * 0.48)],
+          maxZoom: 16,
+          duration: 1,
+        })
+      } else {
+        map.flyTo([s.lat, s.lng], 16, { duration: 1 })
+      }
     }
   }, [currentStep, map]) // eslint-disable-line react-hooks/exhaustive-deps
   return null
 }
 
-export default function Map({ stops, routeLine, currentStep }) {
+export default function Map({ stops, routeLine, currentStep, navigating }) {
   const geocoded = stops.filter(s => s.lat != null && s.lng != null)
 
   return (
@@ -39,7 +51,7 @@ export default function Map({ stops, routeLine, currentStep }) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {currentStep != null && (
-        <MapController currentStep={currentStep} geocoded={geocoded} />
+        <MapController currentStep={currentStep} geocoded={geocoded} navigating={navigating} />
       )}
       {routeLine && (
         <Polyline positions={routeLine} color="#2563eb" weight={4} opacity={0.7} />

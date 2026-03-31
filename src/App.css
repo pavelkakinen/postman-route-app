@@ -226,11 +226,27 @@ code {
     padding: 16px;
   }
 
-  .csv-upload {
-    width: 100%;
-    padding: 32px 20px;
+  .route-option {
+    flex-direction: column;
+    gap: 14px;
   }
 
+  .route-option label {
+    font-size: 1rem;
+    gap: 10px;
+  }
+
+  .route-option input[type="radio"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  .csv-upload {
+    width: 100%;
+    padding: 40px 24px;
+  }
+
+  /* READY phase: sidebar on top, map below */
   .app-ready {
     flex-direction: column;
     height: auto;
@@ -248,6 +264,47 @@ code {
   .map-area {
     min-height: 55svh;
     height: 55svh;
+  }
+
+  /* NAVIGATING phase: full-screen map + bottom sheet */
+  .app-navigating {
+    position: relative;
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .app-navigating .map-area {
+    height: 100svh;
+    min-height: 100svh;
+  }
+
+  .app-navigating .stop-list {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 55svh;
+    border-right: none;
+    border-bottom: none;
+    border-top: 1px solid #ddd;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.14);
+    z-index: 1000;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+  }
+
+  /* Drag handle indicator on bottom sheet */
+  .app-navigating .stop-list::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 4px;
+    background: #ccc;
+    border-radius: 2px;
+    margin: 0 auto 12px;
+    flex-shrink: 0;
   }
 
   .start-nav-btn,
